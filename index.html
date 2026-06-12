@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V6 Quant Trading System</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0f1419;--card:#1c222b;--border:#2a313c;--accent:#818cf8;--green:#34d399;--red:#f87171;--text:#e5e7eb;--text2:#9ca3af;--text3:#6b7280}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  header{text-align:center;padding:72px 24px 48px;background:radial-gradient(ellipse at top,rgba(129,140,248,.12),transparent 70%)}
+  h1{font-size:42px;font-weight:800;letter-spacing:-1px;background:linear-gradient(135deg,#a5b4fc,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .sub{font-size:17px;color:var(--text2);margin-top:12px;font-weight:400}
+  .tags{margin-top:22px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+  .tag{font-size:12px;font-weight:600;padding:6px 14px;border-radius:20px;background:var(--card);border:1px solid var(--border);color:var(--accent)}
+  section{padding:36px 0;border-top:1px solid var(--border)}
+  h2{font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin-bottom:20px}
+  .lead{font-size:16px;color:var(--text);max-width:760px}
+  .lead b{color:#fff}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:8px}
+  .stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
+  .stat .v{font-size:28px;font-weight:800;letter-spacing:-.5px}
+  .stat .v.green{color:var(--green)} .stat .v.accent{color:var(--accent)}
+  .stat .l{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-top:6px;font-weight:600}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:720px){.grid2{grid-template-columns:1fr}h1{font-size:32px}}
+  ul.feat{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px 28px;margin-top:4px}
+  @media(max-width:720px){ul.feat{grid-template-columns:1fr}}
+  ul.feat li{font-size:14px;color:var(--text2);padding-left:20px;position:relative}
+  ul.feat li::before{content:"▸";color:var(--accent);position:absolute;left:0}
+  ul.feat li b{color:var(--text);font-weight:600}
+  .diagram{margin-top:8px;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:#fff}
+  .diagram img{width:100%;display:block}
+  .cap{font-size:12px;color:var(--text3);margin-top:10px;text-align:center}
+  .note{font-size:13px;color:var(--text3);background:var(--card);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:8px;padding:14px 18px;margin-top:18px}
+  footer{text-align:center;padding:48px 24px;color:var(--text3);font-size:13px;border-top:1px solid var(--border)}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>V6 Quant Trading System</h1>
+    <p class="sub">A systematic NSE weekly-rotation equity strategy — multi-horizon LightGBM, fully risk-managed, fully automated.</p>
+    <div class="tags">
+      <span class="tag">LightGBM</span>
+      <span class="tag">Cross-sectional ranking</span>
+      <span class="tag">~360 NSE stocks</span>
+      <span class="tag">Walk-forward tested</span>
+      <span class="tag">Python · Flask</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <h2>What it does</h2>
+    <p class="lead">Every week the model scores ~360 NSE stocks, <b>ranks each against all the others</b>, and holds the <b>top 7</b>. It blends 5-day, 10-day and 20-day return forecasts, sizes positions by risk-parity, and protects capital with VIX-adaptive stops, sector caps and a transaction-cost gate. It runs end-to-end on its own: daily data refresh, weekly rebalance, live dashboard. Currently in paper / dry-run mode.</p>
+  </section>
+
+  <section>
+    <h2>Performance — 25-week walk-forward backtest (cost-adjusted)</h2>
+    <div class="stats">
+      <div class="stat"><div class="v green">+13.4%</div><div class="l">Excess vs Nifty</div></div>
+      <div class="stat"><div class="v">0.35</div><div class="l">Sharpe ratio</div></div>
+      <div class="stat"><div class="v green">-5.6%</div><div class="l">Max drawdown</div></div>
+      <div class="stat"><div class="v">-11.2%</div><div class="l">Nifty, same window</div></div>
+      <div class="stat"><div class="v accent">+4.7%</div><div class="l">Annualised</div></div>
+    </div>
+    <div class="note">Honest framing: transaction costs are deducted, so these are realistic figures, not a frictionless curve. In a <b>−11% falling market</b> the strategy was positive — defensive, market-beating behaviour. 25 weeks is still a small sample; live validation is ongoing.</div>
+  </section>
+
+  <section>
+    <h2>System architecture</h2>
+    <div class="diagram"><img src="v6_architecture.png" alt="System architecture diagram"></div>
+    <p class="cap">Data sources → daily pipeline → LightGBM model → risk gates → execution → dashboard. Daily data refresh, weekly rebalance, fully automated.</p>
+  </section>
+
+  <section>
+    <h2>Under the hood</h2>
+    <ul class="feat">
+      <li><b>Multi-horizon model</b> — blends 5/10/20-day return forecasts</li>
+      <li><b>~30 features</b> — momentum, volatility, RSI/MACD, volume, macro, sentiment, peer-ranks</li>
+      <li><b>Cross-sectional ranking</b> — picks relative winners, market-neutral by design</li>
+      <li><b>Risk-parity sizing</b> with 35% sector / 18% single-stock caps</li>
+      <li><b>VIX-adaptive stops</b> — tight in panic, loose when calm</li>
+      <li><b>Transaction-cost gate</b> — skips trades that can't beat their cost</li>
+      <li><b>Incremental data cache</b> — daily refresh in seconds, not minutes</li>
+      <li><b>Walk-forward backtest</b> with purge gaps + Nifty benchmark</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Full component map</h2>
+    <div class="diagram"><img src="v6_components.png" alt="Component breakdown sheet"></div>
+  </section>
+
+</div>
+
+<footer>
+  Built with Python, LightGBM &amp; Flask · Paper / dry-run mode · For research and educational use.
+</footer>
+
+</body>
+</html>
